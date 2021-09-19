@@ -22,8 +22,8 @@ mutations: {
 //to handle actions
 actions: {
     async fetchTeams({commit}) {
-        var teams = await axios.get("/api/dashboard/teams");
-        commit('setTeams', teams);
+        var response = await axios.get("/api/dashboard/teams");
+        commit('setTeams', response.data);
     }
 }
 });

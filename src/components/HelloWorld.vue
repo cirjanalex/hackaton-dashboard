@@ -12,10 +12,10 @@ export default {
   },
   computed: {
     teams() {
-      return [];
+      return this.$store.state.teams;
     }
   },
-  mounted() {
+  created() {
     this.$store.dispatch('fetchTeams');
   }
 }
