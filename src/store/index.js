@@ -22,7 +22,7 @@ mutations: {
 //to handle actions
 actions: {
     async fetchTeams({commit}) {
-        var teams = await axios.get("https://stefanini-hackathon2021-api.herokuapp.com/api/dashboard/teams");
+        var teams = await axios.get("/api/dashboard/teams");
         commit('setTeams', teams);
     }
 }
