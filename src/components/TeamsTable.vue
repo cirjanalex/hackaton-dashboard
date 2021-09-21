@@ -8,6 +8,7 @@
       :sort-by="['estimatedValue']"
       :sort-desc="[true]"
       class="elevation-1"
+      mobile-breakpoint="0"
     ></v-data-table>
   </div>
 </template>
