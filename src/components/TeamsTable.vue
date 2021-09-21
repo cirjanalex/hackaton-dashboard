@@ -34,7 +34,6 @@ export default {
         { text: "LTC", value: "LTC" },
         { text: "BNB", value: "BNB" },
         { text: "XRP", value: "XRP" },
-        { text: "TRX", value: "TRX" },
         { text: "TRX", value: "TRX" }
       ],
     };
