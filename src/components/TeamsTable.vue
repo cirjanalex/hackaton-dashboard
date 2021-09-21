@@ -40,7 +40,7 @@ export default {
   },
   computed: {
     teams() {
-      return this.$store.state.teams;
+      return this.$store.state.teamsData.teams;
     },
   },
   created() {
