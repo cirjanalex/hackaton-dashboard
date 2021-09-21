@@ -1,7 +1,13 @@
-import { createApp } from 'vue'
-import store from './store'
+import Vue from 'vue'
 import App from './App.vue'
+import store from './store'
+import axios from 'axios'
+import vuetify from './plugins/vuetify'
 
-const app = createApp(App);
-app.use(store);
-app.mount('#app');
+Vue.config.productionTip = false
+axios.defaults.baseURL = 'http://localhost:8081';
+new Vue({
+  store,
+  vuetify,
+  render: h => h(App)
+}).$mount('#app')

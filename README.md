@@ -1,4 +1,4 @@
-# hackathon-2021-dashboard
+# hackathon-dashboard
 
 ## Project setup
 ```
