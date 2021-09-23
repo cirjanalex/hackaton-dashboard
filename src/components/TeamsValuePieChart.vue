@@ -46,14 +46,17 @@ export default {
         },
         tooltip: {
           trigger: "item",
-          formatter: "{b} : <span style='font-weight:bold'>{c} USDT</span> ({d}%)",
+          formatter:
+            "{b} : <span style='font-weight:bold'>{c} USDT</span> ({d}%)",
         },
         legend: {
           orient: "horizontal",
           left: "center",
           top: "bottom",
           data: legend,
-          formatter: () => ""
+          formatter: () => "",
+          itemWidth: 35,
+          itemHeight: 20,
         },
         series: [
           {
@@ -92,5 +95,6 @@ export default {
 .chart {
   height: 400px;
   width: 400px;
+  padding-bottom: 2em;
 }
 </style>
