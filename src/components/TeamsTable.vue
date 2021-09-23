@@ -1,6 +1,5 @@
 <template>
-  <div class="table">
-    <h1>Crypto Hackathon 2021</h1>
+  <div class="main">    
     <v-data-table
       :headers="headers"
       :items="teams"
@@ -28,19 +27,19 @@ export default {
           value: "name",
         },
         { text: "Transactions", value: "transactions" },
-        { text: "Estimated Value - USDT", value: "estimatedValue" },        
+        { text: "Estimated Value - USDT", value: "estimatedValue" },
         { text: "BTC", value: "BTC" },
         { text: "ETH", value: "ETH" },
         { text: "LTC", value: "LTC" },
         { text: "BNB", value: "BNB" },
         { text: "XRP", value: "XRP" },
-        { text: "TRX", value: "TRX" }
+        { text: "TRX", value: "TRX" },
       ],
-    };
+    }
   },
   computed: {
     teams() {
-      return this.$store.state.teamsData.teams;
+      return this.$store.state.teams;
     },
   },
   created() {
@@ -49,12 +48,12 @@ export default {
 };
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-.table {
+.main {
   display: flex;
   align-items: center;
   flex-direction: column;
+  width:100%;
 }
 .v-data-table {
   width: 80%;
