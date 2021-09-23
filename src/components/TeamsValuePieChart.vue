@@ -46,6 +46,7 @@ export default {
         },
         tooltip: {
           trigger: "item",
+          confine: true,
           formatter:
             "{b} : <span style='font-weight:bold'>{c} USDT</span> ({d}%)",
         },
