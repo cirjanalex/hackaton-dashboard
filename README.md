@@ -9,3 +9,5 @@ You have the same chart as we do in the main page but with only one team selecte
 
 Add the stefanini logo
 Modify the title
+
+We should probably prefill the graph x-axis with some minimum amount of days
