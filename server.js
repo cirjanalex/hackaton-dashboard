@@ -7,7 +7,7 @@ app.use(serveStatic(path.join(__dirname, 'dist')));
 const port = process.env.PORT || 8081;
 app.all('/api/*', function(req, res)
 {
-    var url = `https://stefanini-hackathon2021-api.herokuapp.com${req.path}`;
+    var url = `https://stefanini-hackathon2021-api.herokuapp.com${req.originalUrl}`;
     
     request(url).on('response', function(response) {
       response.headers['Access-Control-Allow-Origin'] = '*';

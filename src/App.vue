@@ -2,9 +2,10 @@
   <v-app>
     <v-main>
       <div class="main-wrapper">
-        <h1>Crypto Hackathon 2021</h1>
+        <h1>Title placeholder</h1>
         <TeamsTable />
-        <TeamsValuePieChart />
+        <!--  <TeamsValuePieChart /> -->
+        <TeamsProgressChart :teamsInfo="selectedTeamsInfo" :selectedProperty="'estimatedValue'"/>
       </div>
     </v-main>
   </v-app>
@@ -12,21 +13,30 @@
 
 <script>
 import TeamsTable from "./components/TeamsTable";
-import TeamsValuePieChart from "./components/TeamsValuePieChart";
+//import TeamsValuePieChart from "./components/TeamsValuePieChart";
+import TeamsProgressChart from "./components/TeamsProgressChart";
 
 export default {
   name: "App",
 
   components: {
     TeamsTable,
-    TeamsValuePieChart,
+    //TeamsValuePieChart,
+    TeamsProgressChart,
   },
-
+  computed: {
+    selectedTeamsInfo() {
+      return this.$store.getters.selectedTeamsInfo;
+    }
+  },
   data: () => ({
     //
   }),
-  created() {
-    this.$store.dispatch("fetchTeams");
+  async created() {
+    
+    await this.$store.dispatch("fetchTeams");
+    await this.$store.dispatch("fetchTeamDetails","d2379fd");
+    this.$store.commit("selectTeams", ["d2379fd"]);
   },
 };
 </script>
@@ -39,5 +49,9 @@ export default {
   display: flex;
   align-items: center;
   flex-direction: column;
+}
+h1 {
+  padding: 2em;
+  color: rgb(75, 75, 75);
 }
 </style>

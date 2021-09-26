@@ -34,7 +34,6 @@ export default {
   },
   computed: {
     option() {
-      //var x = this.$store.state.teams.map((a) => a.name)
       var legend = this.$store.state.teams.map((a) => a.name);
       var seriesData = this.$store.state.teams.map((a) => {
         return { name: a.name, value: a.estimatedValue };

@@ -5,7 +5,7 @@
       :items="teams"
       :items-per-page="10"
       :sort-by="['estimatedValue']"
-      :sort-desc="[true]"
+      :sort-desc="[true]"      
       class="elevation-1"
     ></v-data-table>
   </div>
@@ -57,9 +57,5 @@ export default {
 }
 .v-data-table {
   width: 80%;
-}
-h1 {
-  padding: 2em;
-  color: rgb(75, 75, 75);
 }
 </style>
