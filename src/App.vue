@@ -35,8 +35,7 @@ export default {
   async created() {
     
     await this.$store.dispatch("fetchTeams");
-    await this.$store.dispatch("fetchTeamDetails","d2379fd");
-    this.$store.commit("selectTeams", ["d2379fd"]);
+    await this.$store.dispatch("fetchTeamDetails","d2379fd");    
   },
 };
 </script>

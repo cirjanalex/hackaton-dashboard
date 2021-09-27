@@ -25,16 +25,16 @@ export default new Vuex.Store({
         setTeams(state, teams) {
             state.teams = teams;
         },
-        setTeamInfo(state, {teamInfo, teamId}) {
+        setTeamInfo(state, { teamInfo, teamId }) {
             state.teamsInfo[teamId] = {
                 data: teamInfo,
                 name: state.teams.find((team) => team.id === teamId).name
             };
         },
-        selectTeams(state, teamIds) {
-            state.selectedTeams = [...new Set([...state.selectedTeams, ...teamIds])];
+        setSelectedTeams(state, selectedTeamIds) {
+            state.selectedTeams = selectedTeamIds;
         },
-        deselectTeam(state, teamId) {
+        removeSelectedTeam(state, teamId) {
             state.selectedTeams.splice(state.selectedTeams.findIndex((team) => team === teamId), 1);
         }
     },
@@ -46,7 +46,23 @@ export default new Vuex.Store({
         },
         async fetchTeamDetails({ commit }, teamId) {
             var response = await axios.get(`/api/dashboard/team?id=${teamId}`);
-            commit('setTeamInfo', {teamInfo: response.data, teamId: teamId });
+            commit('setTeamInfo', { teamInfo: response.data, teamId: teamId });
+            return response;
+        },
+
+        async selectTeams({ state, commit, dispatch }, { teamIds, selected }) {
+            if (selected) {
+                for (var i = 0; i < teamIds.length; i++) {
+                    await dispatch('fetchTeamDetails', teamIds[i]);
+                }
+                commit('setSelectedTeams', [...new Set([...state.selectedTeams, ...teamIds])]);
+            }
+            else {
+                teamIds.forEach((teamId) => {
+                    commit('removeSelectedTeam', teamId);
+                });
+                
+            }
         }
     }
 });

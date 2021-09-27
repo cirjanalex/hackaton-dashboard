@@ -1,12 +1,14 @@
 <template>
-  <div class="main">    
+  <div class="main">
     <v-data-table
       :headers="headers"
       :items="teams"
       :items-per-page="10"
       :sort-by="['estimatedValue']"
-      :sort-desc="[true]"      
+      :sort-desc="[true]"
       class="elevation-1"
+      show-select
+      v-on:item-selected="itemSelected"
     ></v-data-table>
   </div>
 </template>
@@ -23,7 +25,6 @@ export default {
         {
           text: "Team Name",
           align: "start",
-          //sortable: false,
           value: "name",
         },
         { text: "Transactions", value: "transactions" },
@@ -35,15 +36,20 @@ export default {
         { text: "XRP", value: "XRP" },
         { text: "TRX", value: "TRX" },
       ],
-    }
+    };
   },
   computed: {
     teams() {
       return this.$store.state.teams;
     },
   },
-  created() {
-    this.$store.dispatch("fetchTeams");
+  methods: {
+    itemSelected({item, value}) {
+      this.$store.dispatch("selectTeams", {
+        teamIds: [item.id],
+        selected: value,
+      });
+    },
   },
 };
 </script>
@@ -53,7 +59,7 @@ export default {
   display: flex;
   align-items: center;
   flex-direction: column;
-  width:100%;
+  width: 100%;
 }
 .v-data-table {
   width: 80%;

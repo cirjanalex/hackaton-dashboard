@@ -1,6 +1,6 @@
 <template>
   <div class="main">
-    <v-chart class="chart" :option="option" />
+    <v-chart ref="echartinstance" class="chart" :option="option" />
   </div>
 </template>
 
@@ -35,10 +35,33 @@ export default {
   },
   computed: {
     option() {
-      var seriesData = this.teamsInfo[0]?.data?.map((teamInfo) => {
-        return [teamInfo.id, teamInfo[this.selectedProperty]];
+      this.$refs.echartinstance?.clear();
+      var seriesList = this.teamsInfo.map((teamInfo) => {
+        return {
+          type: "line",
+          showSymbol: false,
+          name: teamInfo.name,
+          endLabel: {
+            show: true,
+            formatter: "{a}",
+          },
+          labelLayout: {
+            moveOverlap: "shiftY",
+          },
+          emphasis: {
+            focus: "series",
+          },
+          data: teamInfo.data.map((teamInfoSnapshot) => {
+            return [
+              teamInfoSnapshot.id,
+              teamInfoSnapshot[this.selectedProperty],
+            ];
+          }),
+        };
       });
+
       return {
+        type: "line",
         title: {
           text: "Progress Chart",
           left: "center",
@@ -58,13 +81,7 @@ export default {
           type: "time",
           name: "Time",
         },
-        series: [
-          {
-            name: "Team 1",
-            type: "line",
-            data: seriesData            
-          },
-        ],
+        series: seriesList,
       };
     },
   },
