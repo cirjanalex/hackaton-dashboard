@@ -1,6 +1,4 @@
 # TODO
-Add support for multiple series in the Progress Chart
-Tie the table to the chart. When clicking on a table checkbox reflect that in the chart.
 Add a way to select what to see in the chart. ( maybe a list ?)
 
 New page  Team details
