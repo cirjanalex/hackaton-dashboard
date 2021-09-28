@@ -94,11 +94,10 @@ export default {
   display: flex;
   align-items: center;
   flex-direction: column;
-  width: 100%;
+  width: 100%;  
 }
 .chart {
   height: 400px;
   width: 80%;
-  padding-bottom: 2em;
 }
 </style>

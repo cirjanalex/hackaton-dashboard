@@ -7,7 +7,7 @@ Vue.use(Vuex);
 export default new Vuex.Store({
     //to handle state
     state: {
-        teams: [],
+        teams: undefined,
         teamsInfo: {},
         selectedTeams: []
     },
@@ -18,7 +18,6 @@ export default new Vuex.Store({
             return state.selectedTeams.map((teamId) => state.teamsInfo[teamId]);
         }
     },
-
 
     //to handle mutations
     mutations: {
@@ -43,6 +42,7 @@ export default new Vuex.Store({
         async fetchTeams({ commit }) {
             var response = await axios.get("/api/dashboard/teams");
             commit('setTeams', response.data);
+            await this.dispatch('selectTeams', {teamIds: response.data.map((team) => team.id), selected: true});
         },
         async fetchTeamDetails({ commit }, teamId) {
             var response = await axios.get(`/api/dashboard/team?id=${teamId}`);
@@ -53,7 +53,8 @@ export default new Vuex.Store({
         async selectTeams({ state, commit, dispatch }, { teamIds, selected }) {
             if (selected) {
                 for (var i = 0; i < teamIds.length; i++) {
-                    await dispatch('fetchTeamDetails', teamIds[i]);
+                    if (state.teamsInfo[teamIds[i]] === undefined)
+                        await dispatch('fetchTeamDetails', teamIds[i]);
                 }
                 commit('setSelectedTeams', [...new Set([...state.selectedTeams, ...teamIds])]);
             }
@@ -61,7 +62,7 @@ export default new Vuex.Store({
                 teamIds.forEach((teamId) => {
                     commit('removeSelectedTeam', teamId);
                 });
-                
+
             }
         }
     }

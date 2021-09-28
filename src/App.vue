@@ -6,6 +6,7 @@
         <TeamsTable />
         <!--  <TeamsValuePieChart /> -->
         <TeamsProgressChart :teamsInfo="selectedTeamsInfo" :selectedProperty="'estimatedValue'"/>
+        <TeamsProgressChart :teamsInfo="selectedTeamsInfo" :selectedProperty="'transactions'"/>
       </div>
     </v-main>
   </v-app>
@@ -32,10 +33,8 @@ export default {
   data: () => ({
     //
   }),
-  async created() {
-    
+  async created() {    
     await this.$store.dispatch("fetchTeams");
-    await this.$store.dispatch("fetchTeamDetails","d2379fd");    
   },
 };
 </script>
