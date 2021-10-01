@@ -2,11 +2,11 @@
   <v-app>
     <v-main>
       <div class="main-wrapper">
-        <h1>Title placeholder</h1>
+        <h1>Dashboard</h1>
         <TeamsTable />
         <!--  <TeamsValuePieChart /> -->
-        <TeamsProgressChart :teamsInfo="selectedTeamsInfo" :selectedProperty="'estimatedValue'"/>
-        <TeamsProgressChart :teamsInfo="selectedTeamsInfo" :selectedProperty="'ordersCount'"/>
+        <TeamsProgressChart :title="'Estimated Value'" :teamsInfo="selectedTeamsInfo" :selectedProperty="'estimatedValue'"/>
+        <TeamsProgressChart :title="'Number of orders'" :teamsInfo="selectedTeamsInfo" :selectedProperty="'ordersCount'"/>
       </div>
     </v-main>
   </v-app>

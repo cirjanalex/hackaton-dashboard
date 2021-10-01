@@ -32,6 +32,7 @@ export default {
   props: {
     teamsInfo: Array,
     selectedProperty: String,
+    title: String
   },
   computed: {
     option() {
@@ -63,7 +64,7 @@ export default {
       return {
         type: "line",
         title: {
-          text: "Progress Chart",
+          text: this.title,
           left: "center",
         },
         tooltip: {
