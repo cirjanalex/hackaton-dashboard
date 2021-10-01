@@ -6,7 +6,7 @@
         <TeamsTable />
         <!--  <TeamsValuePieChart /> -->
         <TeamsProgressChart :teamsInfo="selectedTeamsInfo" :selectedProperty="'estimatedValue'"/>
-        <TeamsProgressChart :teamsInfo="selectedTeamsInfo" :selectedProperty="'transactions'"/>
+        <TeamsProgressChart :teamsInfo="selectedTeamsInfo" :selectedProperty="'ordersCount'"/>
       </div>
     </v-main>
   </v-app>
