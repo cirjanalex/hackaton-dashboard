@@ -2,7 +2,7 @@
   <v-app>
     <v-main>
       <div class="main-wrapper">
-        <h1>Dashboard</h1>
+        <h1>Live Results Dashboard</h1>
         <TeamsTable />
         <!--  <TeamsValuePieChart /> -->
         <TeamsProgressChart :title="'Estimated Value'" :teamsInfo="selectedTeamsInfo" :selectedProperty="'estimatedValue'"/>
