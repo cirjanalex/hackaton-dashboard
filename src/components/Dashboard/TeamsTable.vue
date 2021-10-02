@@ -1,7 +1,7 @@
 <template>
   <div class="main">
     <v-data-table
-      v-model="selected"
+      v-model="selectedVals"
       :headers="headers"
       :items="teams"
       :items-per-page="15"
@@ -13,8 +13,11 @@
       loading-text="Loading... Please wait"
       v-on:item-selected="itemSelected"
       v-on:toggle-select-all="selectedAll"
-      v-on:current-items="hasInput"
-    ></v-data-table>
+    >
+     <template v-slot:item.name="props">
+        <a v-on:click="onClick(props.item.id)" >{{props.item.name}}</a>
+      </template>
+    </v-data-table>
   </div>
 </template>
 
@@ -25,14 +28,14 @@ export default {
     msg: String,
   },
   data() {
-    return {      
+    return {
       headers: [
         {
           text: "Team Name",
           align: "start",
           value: "name",
         },
-        { text: "Transactions", value: "transactions" },
+        { text: "Orders Count", value: "ordersCount" },
         { text: "Estimated Value - USDT", value: "estimatedValue" },
         { text: "BTC", value: "BTC" },
         { text: "ETH", value: "ETH" },
@@ -50,9 +53,12 @@ export default {
     loading() {
       return this.$store.state.teams === undefined;
     },
-    selected() {
-      return this.$store.state.teams;
-    }
+    selectedVals: {
+      get() {
+        return this.$store.state.teams;
+      },
+      set() {},
+    },
   },
   methods: {
     itemSelected({ item, value }) {
@@ -66,6 +72,9 @@ export default {
         teamIds: items.map((item) => item.id),
         selected: value,
       });
+    },
+    onClick(teamId) {
+      this.$router.push({ path: `/teamview/${teamId}` });
     },
   },
 };

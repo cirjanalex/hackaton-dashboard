@@ -1,55 +1,39 @@
 <template>
-  <v-app>
-    <v-main>
-      <div class="main-wrapper">
-        <h1>Live Results Dashboard</h1>
-        <TeamsTable />
-        <!--  <TeamsValuePieChart /> -->
-        <TeamsProgressChart :title="'Estimated Value'" :teamsInfo="selectedTeamsInfo" :selectedProperty="'estimatedValue'"/>
-        <TeamsProgressChart :title="'Number of orders'" :teamsInfo="selectedTeamsInfo" :selectedProperty="'ordersCount'"/>
-      </div>
-    </v-main>
-  </v-app>
+  <div id="app">
+    <div id="nav">
+      <router-link to="/">Home</router-link>
+    </div>
+    <router-view/>
+  </div>
 </template>
-
 <script>
-import TeamsTable from "./components/TeamsTable";
-//import TeamsValuePieChart from "./components/TeamsValuePieChart";
-import TeamsProgressChart from "./components/TeamsProgressChart";
 
 export default {
-  name: "App",
-
-  components: {
-    TeamsTable,
-    //TeamsValuePieChart,
-    TeamsProgressChart,
-  },
-  computed: {
-    selectedTeamsInfo() {
-      return this.$store.getters.selectedTeamsInfo;
-    }
-  },
-  data: () => ({
-    //
-  }),
+  name: "App",  
   async created() {    
     await this.$store.dispatch("fetchTeams");
   },
 };
 </script>
+<style lang="scss">
+#app {
+  font-family: Avenir, Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-align: center;
+  color: #2c3e50;  
+}
 
-<style scoped>
-.v-application {
-  background: whitesmoke;
-}
-.main-wrapper {
-  display: flex;
-  align-items: center;
-  flex-direction: column;
-}
-h1 {
-  padding: 2em;
-  color: rgb(75, 75, 75);
+#nav {
+  padding: 30px;
+
+  a {
+    font-weight: bold;
+    color: #2c3e50;
+
+    &.router-link-exact-active {
+      color: #42b983;
+    }
+  }
 }
 </style>

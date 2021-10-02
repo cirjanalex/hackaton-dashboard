@@ -8,14 +8,16 @@ export default new Vuex.Store({
     //to handle state
     state: {
         teams: undefined,
-        teamsInfo: {},
+        orders: [],
+        teamsInfo: [],
         selectedTeams: []
     },
 
     //to handle state
     getters: {
         selectedTeamsInfo: (state) => {
-            return state.selectedTeams.map((teamId) => state.teamsInfo[teamId]);
+            return state.teamsInfo.filter(
+                (teamsInfo) => state.selectedTeams.some((st) => st === teamsInfo.id))
         }
     },
 
@@ -25,16 +27,38 @@ export default new Vuex.Store({
             state.teams = teams;
         },
         setTeamInfo(state, { teamInfo, teamId }) {
-            state.teamsInfo[teamId] = {
+            let startIndex = state.teamsInfo.findIndex(ti => ti.id === teamId);
+            var teamInfoObject = {
                 data: teamInfo,
-                name: state.teams.find((team) => team.id === teamId).name
+                name: state.teams.find((team) => team.id === teamId).name,
+                id: teamId
             };
+            if (startIndex !== -1) {
+                state.teamsInfo.splice(startIndex, 1, teamInfoObject)
+            }
+            else {
+                state.teamsInfo.push(teamInfoObject);
+            }
         },
         setSelectedTeams(state, selectedTeamIds) {
             state.selectedTeams = selectedTeamIds;
         },
         removeSelectedTeam(state, teamId) {
             state.selectedTeams.splice(state.selectedTeams.findIndex((team) => team === teamId), 1);
+        },
+        storeOrders(state, { orders, teamId }) {
+            var teamOrdersObject = {
+                teamId: teamId,
+                orders: orders
+            };
+            let startIndex = state.orders.findIndex((teamOrders) => teamOrders.teamId === teamId);
+            if (startIndex !== -1) {
+                state.orders.splice(startIndex, 1, teamOrdersObject);
+            }
+            else {
+                state.orders.push(teamOrdersObject);
+            }
+
         }
     },
     //to handle actions
@@ -42,8 +66,9 @@ export default new Vuex.Store({
         async fetchTeams({ commit }) {
             var response = await axios.get("/api/dashboard/teams");
             commit('setTeams', response.data);
-            await this.dispatch('selectTeams', {teamIds: response.data.map((team) => team.id), selected: true});
+            await this.dispatch('selectTeams', { teamIds: response.data.map((team) => team.id), selected: true });
         },
+
         async fetchTeamDetails({ commit }, teamId) {
             var response = await axios.get(`/api/dashboard/team?id=${teamId}`);
             commit('setTeamInfo', { teamInfo: response.data, teamId: teamId });
@@ -53,7 +78,7 @@ export default new Vuex.Store({
         async selectTeams({ state, commit, dispatch }, { teamIds, selected }) {
             if (selected) {
                 for (var i = 0; i < teamIds.length; i++) {
-                    if (state.teamsInfo[teamIds[i]] === undefined)
+                    if(!state.teamsInfo.some(ti => ti.id === teamIds[i]))
                         await dispatch('fetchTeamDetails', teamIds[i]);
                 }
                 commit('setSelectedTeams', [...new Set([...state.selectedTeams, ...teamIds])]);
@@ -64,6 +89,11 @@ export default new Vuex.Store({
                 });
 
             }
+        },
+
+        async fetchOrders({ commit }, teamId) {
+            var response = await axios.get(`/api/dashboard/orders?id=${teamId}`);
+            commit('storeOrders', { orders: response.data, teamId: teamId });
         }
     }
 });

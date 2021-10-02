@@ -89,7 +89,7 @@ export default {
 };
 </script>
 
-<style scoped>
+<style lang="less" scoped>
 .main {
   padding-top: 3em;
   display: flex;
