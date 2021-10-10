@@ -3,14 +3,13 @@
     <div id="nav">
       <router-link to="/">Home</router-link>
     </div>
-    <router-view/>
+    <router-view />
   </div>
 </template>
 <script>
-
 export default {
-  name: "App",  
-  async created() {    
+  name: "App",
+  async created() {
     await this.$store.dispatch("fetchTeams");
   },
 };
@@ -21,7 +20,10 @@ export default {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
-  color: #2c3e50;  
+  color: #2c3e50;
+  .v-application--wrap {
+    min-height: 0;
+  }
 }
 
 #nav {

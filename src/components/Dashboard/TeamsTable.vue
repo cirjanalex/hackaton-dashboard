@@ -14,8 +14,8 @@
       v-on:item-selected="itemSelected"
       v-on:toggle-select-all="selectedAll"
     >
-     <template v-slot:item.name="props">
-        <a v-on:click="onClick(props.item.id)" >{{props.item.name}}</a>
+      <template v-slot:item.name="props">
+        <a v-on:click="onClick(props.item.id)">{{ props.item.name }}</a>
       </template>
     </v-data-table>
   </div>
@@ -80,14 +80,14 @@ export default {
 };
 </script>
 
-<style scoped>
+<style lang="less" scoped>
 .main {
   display: flex;
   align-items: center;
   flex-direction: column;
   width: 100%;
-}
-.v-data-table {
-  width: 80%;
+  .v-data-table {
+    width: 100%;
+  }
 }
 </style>

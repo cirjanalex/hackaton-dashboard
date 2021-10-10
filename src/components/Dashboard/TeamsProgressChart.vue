@@ -1,5 +1,22 @@
 <template>
   <div class="main">
+    <v-list dense>
+      <v-subheader>Graph Categories</v-subheader>
+      <v-list-item-group
+        v-model="selectedItem"
+        color="primary"
+        :mandatory="true"
+      >
+        <v-list-item v-for="(item, i) in items" :key="i">
+          <v-list-item-icon>
+            <v-icon v-text="item.icon"></v-icon>
+          </v-list-item-icon>
+          <v-list-item-content>
+            <v-list-item-title v-text="item.text"></v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+      </v-list-item-group>
+    </v-list>
     <v-chart ref="echartinstance" class="chart" :option="option" />
   </div>
 </template>
@@ -31,10 +48,22 @@ export default {
   },
   props: {
     teamsInfo: Array,
-    selectedProperty: String,
-    title: String
   },
+  data: () => ({
+    selectedItem: 0,
+    items: [
+      {
+        id: "estimatedValue",
+        text: "Estimated Value - USDT",
+        icon: "mdi-clock",
+      },
+      { id: "ordersCount", text: "Order Count", icon: "mdi-account" },
+    ],
+  }),
   computed: {
+    selectedProperty() {
+      return this.items[this.selectedItem].id;
+    },
     option() {
       this.$refs.echartinstance?.clear();
       var seriesList = this.teamsInfo.map((teamInfo) => {
@@ -45,6 +74,10 @@ export default {
           endLabel: {
             show: true,
             formatter: "{a}",
+            fontWeight: 600,
+            fontSize: 14,
+            align: "left",
+            lineHeight: 22,
           },
           labelLayout: {
             moveOverlap: "shiftY",
@@ -52,6 +85,7 @@ export default {
           emphasis: {
             focus: "series",
           },
+          animationEasing: "quinticOut",
           data: teamInfo.data.map((teamInfoSnapshot) => {
             return [
               teamInfoSnapshot.id,
@@ -63,17 +97,12 @@ export default {
 
       return {
         type: "line",
-        title: {
-          text: this.title,
-          left: "center",
-        },
         tooltip: {
           order: "valueDesc",
           trigger: "axis",
         },
         yAxis: {
           type: "value",
-          name: this.selectedProperty,
         },
         xAxis: {
           axisLabel: {
@@ -83,7 +112,26 @@ export default {
           name: "Time",
         },
         series: seriesList,
+        grid: {
+          right: "18%",
+          left: "12%",
+        },
       };
+    },
+  },
+  mounted() {
+    this.$nextTick(() => {
+      window.addEventListener("resize", this.onResize);
+    });
+  },
+
+  beforeDestroy() {
+    window.removeEventListener("resize", this.onResize);
+  },
+
+  methods: {
+    onResize() {
+      this.$refs.echartinstance?.resize();
     },
   },
 };
@@ -91,14 +139,13 @@ export default {
 
 <style lang="less" scoped>
 .main {
-  padding-top: 3em;
   display: flex;
-  align-items: center;
-  flex-direction: column;
-  width: 100%;  
-}
-.chart {
-  height: 400px;
-  width: 80%;
+  width: 100%;
+  @media (max-width: 700px) {
+    flex-direction: column;
+  }
+  .chart {
+    height: 400px;
+  }
 }
 </style>
