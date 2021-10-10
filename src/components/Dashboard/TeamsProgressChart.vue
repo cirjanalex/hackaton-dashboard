@@ -55,9 +55,9 @@ export default {
       {
         id: "estimatedValue",
         text: "Estimated Value - USDT",
-        icon: "currency-usd",
+        icon: "mdi-currency-usd",
       },
-      { id: "ordersCount", text: "Order Count", icon: "bank-transfer" },
+      { id: "ordersCount", text: "Order Count", icon: "mdi-bank-transfer" },
     ],
   }),
   computed: {
