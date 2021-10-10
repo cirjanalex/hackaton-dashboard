@@ -4,7 +4,7 @@
       v-model="selectedVals"
       :headers="headers"
       :items="teams"
-      :items-per-page="15"
+      :items-per-page="10"
       :sort-by="['estimatedValue']"
       :sort-desc="[true]"
       :loading="loading"
