@@ -10,7 +10,8 @@ export default new Vuex.Store({
         teams: undefined,
         orders: [],
         teamsInfo: [],
-        selectedTeams: []
+        selectedTeams: [],
+        currentTeam: undefined
     },
 
     //to handle state
@@ -25,6 +26,9 @@ export default new Vuex.Store({
     mutations: {
         setTeams(state, teams) {
             state.teams = teams;
+        },
+        setCurrentTeam(state, teamId) {
+            state.currentTeam = state.teams.filter(t => t.id === teamId)[0];
         },
         setTeamInfo(state, { teamInfo, teamId }) {
             let startIndex = state.teamsInfo.findIndex(ti => ti.id === teamId);
@@ -63,22 +67,33 @@ export default new Vuex.Store({
     },
     //to handle actions
     actions: {
+        async fetchTeamsAndSelect({state, dispatch }) {
+            await dispatch('fetchTeams');
+            await dispatch('selectTeams', { teamIds: state.teams.map((team) => team.id), selected: true });
+        },
+
         async fetchTeams({ commit }) {
             var response = await axios.get("/api/dashboard/teams");
             commit('setTeams', response.data);
-            await this.dispatch('selectTeams', { teamIds: response.data.map((team) => team.id), selected: true });
+        },
+
+        async fetchCurrentTeam({ state, commit, dispatch }, teamId) {
+            if (state.teams === undefined) {
+                await dispatch('fetchTeams');
+            }
+            commit("setCurrentTeam", teamId);
         },
 
         async fetchTeamDetails({ commit }, teamId) {
             var response = await axios.get(`/api/dashboard/team?id=${teamId}`);
             commit('setTeamInfo', { teamInfo: response.data, teamId: teamId });
-            return response;
+            //return response;
         },
 
         async selectTeams({ state, commit, dispatch }, { teamIds, selected }) {
             if (selected) {
                 for (var i = 0; i < teamIds.length; i++) {
-                    if(!state.teamsInfo.some(ti => ti.id === teamIds[i]))
+                    if (!state.teamsInfo.some(ti => ti.id === teamIds[i]))
                         await dispatch('fetchTeamDetails', teamIds[i]);
                 }
                 commit('setSelectedTeams', [...new Set([...state.selectedTeams, ...teamIds])]);
@@ -87,7 +102,6 @@ export default new Vuex.Store({
                 teamIds.forEach((teamId) => {
                     commit('removeSelectedTeam', teamId);
                 });
-
             }
         },
 

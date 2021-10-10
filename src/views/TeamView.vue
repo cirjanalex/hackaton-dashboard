@@ -1,38 +1,49 @@
 <template>
   <v-app>
     <v-main>
-      <div class="main">
-        <h1>{{ teamName }} Dashboard</h1>
-        <span
-          ><h3>Estimated Value - {{ estimatedValue }} USDT</h3></span
-        >
-        <span
-          ><h3>Orders Count - {{ ordersCount }}</h3></span
-        >
-        <v-data-table
-          :headers="headers"
-          :items="orders"
-          :items-per-page="10"
-          :sort-by="['date']"
-          :sort-desc="[false]"
-          :loading="isLoading"
-          class="elevation-1"
-          loading-text="Loading... Please wait"
-        ></v-data-table>
-        
-        <TeamsProgressChart
-          :title="'Estimated Value'"
-          :teamsInfo="selectedTeamsInfo"
-          :selectedProperty="'estimatedValue'"
-        />        
+      <div class="main-wrapper">
+        <div class="wrapper">
+          <h1>{{ teamName }} <span> Dashboard </span></h1>
+
+          <h3>
+            <div class="label">Estimated Value</div>
+            <div class="value">
+              <span>{{ estimatedValue }} </span> USDT
+            </div>
+          </h3>
+          <h3>
+            <div class="label">Orders Count</div>
+            <div class="value">
+              <span>{{ ordersCount }} </span> Orders
+            </div>
+          </h3>
+          <h2>Orders</h2>
+          <div class="table">
+            <v-data-table
+              :headers="headers"
+              :items="orders"
+              :items-per-page="10"
+              :sort-by="['date']"
+              :sort-desc="[true]"
+              :loading="isLoading"
+              class="elevation-1"
+              loading-text="Loading... Please wait"
+            ></v-data-table>
+          </div>
+          <div class="chart">
+            <TeamsProgressChart
+              :title="'Estimated Value'"
+              :teamsInfo="teamInfo"
+              :selectedProperty="'estimatedValue'"
+            />
+          </div>
+        </div>
       </div>
     </v-main>
   </v-app>
 </template>
 
 <script>
-//import TeamsTable from "../components/Dashboard/TeamsTable";
-//import TeamsValuePieChart from "./components/TeamsValuePieChart";
 import TeamsProgressChart from "../components/Dashboard/TeamsProgressChart";
 
 export default {
@@ -41,8 +52,6 @@ export default {
     teamId: String,
   },
   components: {
-    //TeamsTable,
-    //TeamsValuePieChart,
     TeamsProgressChart,
   },
   data() {
@@ -58,7 +67,7 @@ export default {
   },
   computed: {
     orders() {
-      return this.$store.state.orders.find(
+      return this.$store.state.orders?.find(
         (teamOrders) => teamOrders.teamId === this.teamId
       )?.orders;
     },
@@ -69,8 +78,11 @@ export default {
         ) === undefined
       );
     },
+    teamInfo() {
+        return this.$store.state.teamsInfo.filter(t => t.id === this.teamId);
+    },
     team() {
-      return this.$store.state.teams?.find((team) => team.id === this.teamId);
+      return this.$store.state.currentTeam;
     },
     teamName() {
       return this.team?.name;
@@ -80,29 +92,73 @@ export default {
     },
     estimatedValue() {
       return this.team?.estimatedValue;
-    },
-    // TODO have a specific store path for the team dashboard,
-    // that way we don't redraw the f graph multiple times
-    selectedTeamsInfo() {      
-      return this.$store.state.teamsInfo.filter(ti => ti.id === this.teamId);
-    },
+    }
   },
-
+  mounted() {
+    window.scrollTo(0, 0);
+  },
   async created() {
-    // fetch team info
+    var currentTeam = this.$store.dispatch("fetchCurrentTeam", this.teamId);    
     await this.$store.dispatch("fetchOrders", this.teamId);
+    await currentTeam;
+    await this.$store.dispatch("fetchTeamDetails", this.teamId);
+    
   },
 };
 </script>
 
-<style scoped>
-.main {
+<style lang="less" scoped>
+.main-wrapper {
+  h1 {
+    color: crimson;
+    span {
+      color: #2c3e50;
+    }
+    margin-bottom: 3rem;
+  }
+  h2 {
+    margin-top: 2rem;
+    color: #2c3e50;
+    display: flex;
+    margin-left: 1rem;
+  }
+  h3 {
+    margin-left: 1rem;
+    color: #2c3e50;
+    display: flex;
+    justify-content: flex-start;
+    gap: 50px;
+    div {
+      min-width: 100px;
+      display: flex;
+      justify-content: space-between;
+      &.value span {
+        color: crimson;
+      }
+      &.label {
+        min-width: 190px;
+      }
+    }
+    @media (max-width: 700px) {
+      justify-content: space-between;
+      margin-right: 1rem;
+    }
+  }
   display: flex;
-  align-items: center;
-  flex-direction: column;
-  width: 100%;
-}
-.v-data-table {
-  width: 80%;
+  justify-content: center;
+  .wrapper {
+    width: 80%;
+  }
+  @media (max-width: 700px) {
+    .wrapper {
+      width: 100%;
+    }
+  }
+  .chart {
+    margin-top: 2rem;
+  }
+  .table {
+    margin-top: 1rem;
+  }
 }
 </style>

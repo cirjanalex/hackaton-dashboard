@@ -42,6 +42,12 @@ export default {
       return this.$store.getters.selectedTeamsInfo;
     },
   },
+  mounted() {
+    window.scrollTo(0, 0);
+  },
+  async created() {
+    await this.$store.dispatch("fetchTeamsAndSelect");
+  }
 };
 </script>
 
@@ -51,7 +57,14 @@ export default {
   .main-wrapper {
     display: flex;
     justify-content: center;
-
+    .wrapper {
+      width: 80%;
+    }
+    @media (max-width: 700px) {
+      .wrapper {
+        width: 100%;
+      }
+    }
     .top-table {
       display: flex;
       @media (max-width: 1278px) {
@@ -75,18 +88,9 @@ export default {
         order: 2;
       }
     }
-
-    .wrapper {
-      width: 80%;
-    }
-    @media (max-width: 700px) {
-      .wrapper {
-        width: 100%;
-      }
-    }
     h1 {
       padding-bottom: 1em;
-      color: rgb(75, 75, 75);
+      color: #2c3e50;
     }
     .graph {
       padding-top: 3rem;

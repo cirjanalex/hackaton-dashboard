@@ -9,9 +9,6 @@
 <script>
 export default {
   name: "App",
-  async created() {
-    await this.$store.dispatch("fetchTeams");
-  },
 };
 </script>
 <style lang="scss">

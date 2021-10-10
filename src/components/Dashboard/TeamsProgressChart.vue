@@ -1,5 +1,5 @@
 <template>
-  <div class="main">
+  <div class="team-progress-chart">
     <v-list dense>
       <v-subheader>Graph Categories</v-subheader>
       <v-list-item-group
@@ -138,7 +138,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.main {
+.team-progress-chart {
   display: flex;
   width: 100%;
   @media (max-width: 700px) {
