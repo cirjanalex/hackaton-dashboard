@@ -3,7 +3,7 @@
     <v-main>
       <div class="main-wrapper">
         <div class="wrapper">
-          <h1>Live Results Dashboard</h1>
+          <h1>CryptoBot Challenge Live Dashboard</h1>
           <div class="top-table">
             <div class="top-graph">
               <TopTeamsGraph :nrOfTeams="3" />
@@ -53,7 +53,6 @@ export default {
 
 <style lang="less" scoped>
 .v-application {
-  background: whitesmoke;
   .main-wrapper {
     display: flex;
     justify-content: center;

@@ -1,7 +1,10 @@
 <template>
   <div id="app">
     <div id="nav">
-      <router-link to="/">Home</router-link>
+      
+      <router-link to="/">        
+      <img class="logo" src="/stefanini-logo.png">  
+      </router-link>
     </div>
     <router-view />
   </div>
@@ -25,10 +28,13 @@ export default {
 
 #nav {
   padding: 30px;
-
+  display: flex;
+  flex-direction:column;
+  .logo {
+    max-width: 200px;
+  }
   a {
     font-weight: bold;
-    color: #2c3e50;
 
     &.router-link-exact-active {
       color: #42b983;
