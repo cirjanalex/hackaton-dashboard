@@ -63,7 +63,7 @@ export default {
           },
         ],
         grid: {
-          left: "13%",
+          left: "16%",
         },
         tooltip: {
           trigger: "axis",

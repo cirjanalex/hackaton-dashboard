@@ -88,7 +88,7 @@ export default {
           animationEasing: "quinticOut",
           data: teamInfo.data.map((teamInfoSnapshot) => {
             return [
-              teamInfoSnapshot.id,
+              teamInfoSnapshot.date,
               teamInfoSnapshot[this.selectedProperty],
             ];
           }),
@@ -114,7 +114,7 @@ export default {
         series: seriesList,
         grid: {
           right: "18%",
-          left: "12%",
+          left: "13%",
         },
       };
     },

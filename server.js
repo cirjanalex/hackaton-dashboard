@@ -4,18 +4,24 @@ const path = require('path');
 const request = require('request');
 const app = express();
 
-app.all('/api/*', function(req, res)
-{
-    var url = `https://stefanini-hackathon2021-api.herokuapp.com${req.originalUrl}`;
-    
-    request(url).on('response', function(response) {
-      response.headers['Access-Control-Allow-Origin'] = '*';
-    }) .pipe(res);
-    
+
+let apiKey = process.env.DASHBOARD_API_KEY;
+
+app.all('/api/*', function (req, res) {
+  var url = `https://crypto-bot-stefanini.herokuapp.com${req.originalUrl}`;
+  
+  request(url, {
+    headers: {
+      'key': apiKey
+    }
+  }).on('response', function (response) {
+    response.headers['Access-Control-Allow-Origin'] = '*';
+  }).pipe(res);
+
 });
 
 app.use(serveStatic(path.join(__dirname, 'dist')));
-app.all('*', function(req, res) {
+app.all('*', function (req, res) {
   res.sendFile(path.join(__dirname, 'dist/index.html'));
 });
 
