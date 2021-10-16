@@ -18,7 +18,7 @@ export default new Vuex.Store({
     getters: {
         selectedTeamsInfo: (state) => {
             return state.teamsInfo.filter(
-                (teamsInfo) => state.selectedTeams.some((st) => st === teamsInfo.id))
+                (teamsInfo) => state.selectedTeams.some((st) => st == teamsInfo.id))
         }
     },
 
@@ -28,13 +28,13 @@ export default new Vuex.Store({
             state.teams = teams;
         },
         setCurrentTeam(state, teamId) {
-            state.currentTeam = state.teams.filter(t => t.id === teamId)[0];
+            state.currentTeam = state.teams.filter(t => t.id == teamId)[0];
         },
         setTeamInfo(state, { teamInfo, teamId }) {
-            let startIndex = state.teamsInfo.findIndex(ti => ti.id === teamId);
+            let startIndex = state.teamsInfo.findIndex(ti => ti.id == teamId);
             var teamInfoObject = {
                 data: teamInfo,
-                name: state.teams.find((team) => team.id === teamId).name,
+                name: state.teams.find((team) => team.id == teamId).name,
                 id: teamId
             };
             if (startIndex !== -1) {
@@ -48,14 +48,14 @@ export default new Vuex.Store({
             state.selectedTeams = selectedTeamIds;
         },
         removeSelectedTeam(state, teamId) {
-            state.selectedTeams.splice(state.selectedTeams.findIndex((team) => team === teamId), 1);
+            state.selectedTeams.splice(state.selectedTeams.findIndex((team) => team == teamId), 1);
         },
         storeOrders(state, { orders, teamId }) {
             var teamOrdersObject = {
                 teamId: teamId,
                 orders: orders
             };
-            let startIndex = state.orders.findIndex((teamOrders) => teamOrders.teamId === teamId);
+            let startIndex = state.orders.findIndex((teamOrders) => teamOrders.teamId == teamId);
             if (startIndex !== -1) {
                 state.orders.splice(startIndex, 1, teamOrdersObject);
             }
@@ -93,7 +93,7 @@ export default new Vuex.Store({
         async selectTeams({ state, commit, dispatch }, { teamIds, selected }) {
             if (selected) {
                 for (var i = 0; i < teamIds.length; i++) {
-                    if (!state.teamsInfo.some(ti => ti.id === teamIds[i]))
+                    if (!state.teamsInfo.some(ti => ti.id == teamIds[i]))
                         await dispatch('fetchTeamDetails', teamIds[i]);
                 }
                 commit('setSelectedTeams', [...new Set([...state.selectedTeams, ...teamIds])]);
