@@ -74,7 +74,7 @@ export default new Vuex.Store({
 
         async fetchTeams({ commit }) {
             var response = await axios.get("/api/dashboard/teams");
-            commit('setTeams', response.data);
+            commit('setTeams', response.data.teams);
         },
 
         async fetchCurrentTeam({ state, commit, dispatch }, teamId) {
