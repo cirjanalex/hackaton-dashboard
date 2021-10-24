@@ -8,6 +8,7 @@ export default new Vuex.Store({
     //to handle state
     state: {
         teams: undefined,
+        snapshotDate: undefined,
         orders: [],
         teamsInfo: [],
         selectedTeams: [],
@@ -24,8 +25,9 @@ export default new Vuex.Store({
 
     //to handle mutations
     mutations: {
-        setTeams(state, teams) {
-            state.teams = teams;
+        setTeams(state, data) {
+            state.teams = data.teams;
+            state.snapshotDate = data.date;
         },
         setCurrentTeam(state, teamId) {
             state.currentTeam = state.teams.filter(t => t.id == teamId)[0];
@@ -74,7 +76,7 @@ export default new Vuex.Store({
 
         async fetchTeams({ commit }) {
             var response = await axios.get("/api/dashboard/teams");
-            commit('setTeams', response.data.teams);
+            commit('setTeams', response.data);            
         },
 
         async fetchCurrentTeam({ state, commit, dispatch }, teamId) {
