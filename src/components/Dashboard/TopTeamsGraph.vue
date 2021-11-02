@@ -39,7 +39,15 @@ export default {
           team1.estimatedValue < team2.estimatedValue ? 1 : -1
         )
         .slice(0, this.nrOfTeams);
-      var teamNames = teams?.map((a) => a.name);
+      var teamNames = teams?.map((a) => {
+        return {
+          value: a.name,
+          textStyle: {
+            width: 75,            
+            overflow: 'break',                      
+          }          
+        };
+      });
       var seriesData = teams?.map((a) => {
         return a.estimatedValue;
       });
@@ -51,6 +59,9 @@ export default {
         xAxis: {
           type: "category",
           data: teamNames,
+          axisLabel: {
+            interval: '0'
+          }
         },
         yAxis: {
           type: "value",
