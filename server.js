@@ -6,9 +6,10 @@ const app = express();
 
 
 let apiKey = process.env.DASHBOARD_API_KEY;
+let apiUrl = process.env.DASHBOARD_API_URL;
 
 app.all('/api/*', function (req, res) {
-  var url = `https://crypto-bot-stefanini.herokuapp.com${req.originalUrl}`;
+  var url = `${apiUrl}${req.originalUrl}`;
   
   request(url, {
     headers: {
