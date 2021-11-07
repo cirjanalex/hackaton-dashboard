@@ -8,7 +8,7 @@
           <h3>
             <div class="label">Estimated Value</div>
             <div class="value">
-              <span>{{ estimatedValue }} </span> USDT
+              <span>{{ Number(estimatedValue).toFixed(2) }} </span> USDT
             </div>
           </h3>
           <h3>
