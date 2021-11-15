@@ -127,7 +127,7 @@ export default {
     },
     selectedVals: {
       get() {
-        return this.$store.state.teams;
+        return this.$store.state.teams.filter(t => !t.name.startsWith('dev'));
       },
       set() {},
     },

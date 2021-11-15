@@ -71,7 +71,7 @@ export default new Vuex.Store({
     actions: {
         async fetchTeamsAndSelect({state, dispatch }) {
             await dispatch('fetchTeams');
-            await dispatch('selectTeams', { teamIds: state.teams.map((team) => team.id), selected: true });
+            await dispatch('selectTeams', { teamIds: state.teams.filter(t => !t.name.startsWith('dev')).map((team) => team.id), selected: true });
         },
 
         async fetchTeams({ commit }) {
@@ -110,7 +110,8 @@ export default new Vuex.Store({
         async fetchOrders({ commit }, teamId) {
             var response = await axios.get(`/api/dashboard/orders?id=${teamId}`);
             commit('storeOrders', { orders: response.data, teamId: teamId });
-        }
+        },
+        
     }
 });
 
