@@ -17,6 +17,18 @@
               <span>{{ ordersCount }} </span> Orders
             </div>
           </h3>
+          <h3>
+            <div class="label">Volume</div>
+            <div class="value">
+              <span>{{ Number(volume).toFixed(2) }} </span> USDT
+            </div>
+          </h3>
+          <h3>
+            <div class="label">Tax</div>
+            <div class="value">
+              <span>{{ Number(tax).toFixed(2) }} </span> USDT
+            </div>
+          </h3>
           <h2>Orders</h2>
           <div class="table">
             <v-data-table
@@ -79,7 +91,7 @@ export default {
       );
     },
     teamInfo() {
-        return this.$store.state.teamsInfo.filter(t => t.id === this.teamId);
+      return this.$store.state.teamsInfo.filter((t) => t.id === this.teamId);
     },
     team() {
       return this.$store.state.currentTeam;
@@ -92,17 +104,42 @@ export default {
     },
     estimatedValue() {
       return this.team?.estimatedValue;
-    }
+    },
+    volume() {
+      if (this.orders?.length === 1) {
+        const firstOrder = this.orders[0];
+        return firstOrder.side === "BUY"
+          ? firstOrder.quantity
+          : firstOrder.quantity * firstOrder.price;
+      }
+
+      const volume = this.orders?.reduce((previous, current) => {
+        let previousUsdt = 0;
+        let currentUsdt = 0;
+        if (previous.side === undefined) previousUsdt = previous;
+        else {
+          if (previous.side === "BUY") previousUsdt = previous.quantity;
+          else previousUsdt = previous.quantity * previous.price;
+        }
+        if (current.side === "BUY") currentUsdt = current.quantity;
+        else currentUsdt = current.quantity * current.price;
+        console.log(previousUsdt + currentUsdt);
+        return previousUsdt + currentUsdt;
+      });
+      return volume;
+    },
+    tax() {
+      return this.volume * 0.001;
+    },
   },
   mounted() {
     window.scrollTo(0, 0);
   },
   async created() {
-    var currentTeam = this.$store.dispatch("fetchCurrentTeam", this.teamId);    
+    var currentTeam = this.$store.dispatch("fetchCurrentTeam", this.teamId);
     await this.$store.dispatch("fetchOrders", this.teamId);
     await currentTeam;
     await this.$store.dispatch("fetchTeamDetails", this.teamId);
-    
   },
 };
 </script>
@@ -123,20 +160,20 @@ export default {
     margin-left: 1rem;
   }
   h3 {
-    margin-left: 1rem;
+    margin-left: 0.5rem;
     color: #2c3e50;
     display: flex;
     justify-content: flex-start;
-    gap: 50px;
+    gap: 10px;
     div {
-      min-width: 100px;
+      min-width: 180px;
       display: flex;
       justify-content: space-between;
       &.value span {
         color: crimson;
       }
       &.label {
-        min-width: 190px;
+        min-width: 150px;
       }
     }
     @media (max-width: 700px) {
